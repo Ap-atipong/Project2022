@@ -1,0 +1,39 @@
+{
+  "name": "red-vam-flow-node",
+  "version": "3.5.0",
+  "description": "Fantastic nodes",
+  "main": "vamapi.js",
+  "keywords": [
+    "node-red",
+    "http",
+    "https",
+    "request",
+    "proxy"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spawnrider/node-red-contrib-http-request.git",
+    "url2": "https://github.com/rikukissa/node-red-contrib-image-output"
+  },
+  "node-red": {
+    "nodes": {
+      "vamapi": "vamapi.js",
+      "vamdisplay": "vamdisplay.js"
+    }
+  },
+  "dependencies": {
+    "request": "^2.74.0",
+    "mustache": "^2.2.1"
+  },
+  "homepage2": "https://github.com/rikukissa/node-red-contrib-image-output",
+  "homepage": "https://github.com/spawnrider/node-red-contrib-http-request",
+  "bugs": {
+    "url": "https://github.com/spawnrider/node-red-contrib-http-request/issues"
+  },
+  "devDependencies": {},
+  "author": ""
+}

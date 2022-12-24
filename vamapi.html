@@ -1,0 +1,197 @@
+<script type="text/javascript">
+    RED.nodes.registerType('vamapi',{
+        category: 'VamFlowNode',
+        // changeColour
+        color: '#af77b5',
+        defaults: {
+            // name: {value:""},
+            method:{value:"GET"},
+            ret: {value:"txt"},
+            // limits:{value:"number"},
+            url:{value:""},
+            url1:{value:""},
+            
+        //     "follow-redirects":{value:true},
+        //     "persistent-http":{value:true},
+        //     tls: {type:"tls-config",required: false}
+        },
+       
+        // credentials: {
+        //     user: {type:"text"},
+        //     password: {type: "password"} },
+
+
+        inputs:1,
+        outputs:1,
+        icon: "font-awesome/fa-feed",
+        label: function() {
+            return this.name||"vamapi";
+        },
+
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+
+   oneditprepare: function() {
+
+    var oldouts = this.outputs;
+            if (RED.nodes.filterLinks({source:{id:this.id},sourcePort:1}).length > 0) { this.outputs = 2; }
+            else { this.outputs = 1; }
+            if (this.outputs !== oldouts) { this.changed = true; }
+            if (!$("#node-input-chartType").val()) {
+                $("#node-input-chartType").val("line");
+            }
+            $("#node-input-size").elementSizer({
+                width: "#node-input-width",
+                height: "#node-input-height",
+                group: "#node-input-group"
+            });
+            $("#node-input-chartType").on("change", function() {
+                $("#legend-show").hide();
+                $("#show-useDifferentColor").hide();
+                if ($(this).val() === "horizontalBar") {
+                    $("#y-label-show").hide();
+                    $("#x-label-show").show();
+                }
+                else {
+                    $("#y-label-show").show();
+                    $("#x-label-show").hide();
+                }
+                if ($(this).val() === "line") {
+                    $("#x-axis-show").show();
+                    $("#x-axis-label-show").show();
+                    $("#interpolate-show").show();
+                    $("#legend-show").show();
+                    $("#y-axis-show").show();
+                    $("#hole-size-show").hide();
+                    $("#show-dot-field").show();
+                    $("#show-useOneColor").hide();
+                }
+                else {
+                    $("#x-axis-show").hide();
+                    $("#x-axis-label-show").hide();
+                    $("#interpolate-show").hide();
+                    $("#show-dot-field").hide();
+                    if (($(this).val() === "bar")||($(this).val() === "horizontalBar")) {
+                        $("#show-useOneColor").show();
+                        $("#legend-show").show();
+                    }
+                    else {
+                        $("#show-useOneColor").hide();
+                    }
+                    if ($(this).val() === "pie") {
+                        $("#y-axis-show").hide();
+                        $("#legend-show").show();
+                        $("#hole-size-show").show();
+                    }
+                    else if ($(this).val() === "polar-area") {
+                        $("#y-axis-show").show();
+                        $("#legend-show").show();
+                        $("#hole-size-show").hide();
+                        $("#show-useDifferentColor").show();
+                    }
+                    else if ($(this).val() === "radar") {
+                        $("#y-axis-show").show();
+                        $("#legend-show").show();
+                        $("#hole-size-show").hide();
+                    }
+                    else {
+                        $("#y-axis-show").show();
+                        $("#hole-size-show").hide();
+                    }
+                }
+
+            });
+
+//             $("#node-input-useAuth").change(function() {
+//                 if ($(this).is(":checked")) {
+//                     $(".node-input-useAuth-row").show();
+//                 } else {
+//                     $(".node-input-useAuth-row").hide();
+//                     $('#node-input-user').val('');
+//                     $('#node-input-password').val('');
+//                 }
+//             });
+//             if (this.credentials.user || this.credentials.has_password) {
+//                 $('#node-input-useAuth').prop('checked', true);
+//             } else {
+//                 $('#node-input-useAuth').prop('checked', false);
+//             }
+//             $("#node-input-useAuth").change();
+
+//             function updateTLSOptions() {
+//                 if ($("#node-input-usetls").is(':checked')) {
+//                     $("#node-row-tls").show();
+//                 } else {
+//                     $("#node-row-tls").hide();
+//                 }
+//             }
+//             if (this.tls) {
+//                 $('#node-input-usetls').prop('checked', true);
+//             } else {
+//                 $('#node-input-usetls').prop('checked', false);
+//             }
+//             updateTLSOptions();
+//             $("#node-input-usetls").on("click",function() {
+//                 updateTLSOptions();
+//             });
+//             $("#node-input-ret").change(function() {
+//                 if ($("#node-input-ret").val() === "obj") {
+//                     $("#tip-json").show();
+//                 } else {
+//                     $("#tip-json").hide();
+//                 }
+//             });
+//         },
+//         oneditsave: function() {
+//             if (!$("#node-input-usetls").is(':checked')) {
+//                 $("#node-input-tls").val("_ADD_");
+//             }
+        }
+      });
+</script>
+
+<script type="text/html" data-template-name="vamapi">
+   
+    <div class="form-row">
+        <label for="node-input-method"><i class="fa fa-tasks"></i> <span data-i18n="httpin.label.method"></span>Method:</label>
+        <select type="text" id="node-input-method" style="width:70%;">
+        <option value="GET">GET</option>
+        <!-- <option value="POST">POST</option>
+        <option value="PUT">PUT</option>
+        <option value="DELETE">DELETE</option> -->
+        <!-- <option value="use" data-i18n="httpin.setby"></option> -->
+        </select>
+    </div>
+
+    <div class="form-row">
+
+        <label for="node-input-ret"><i class="fa fa-arrow-left"></i><span data-i18n="httpin.label.return"></span>Ojects:</label>
+        <select type="text" id="node-input-ret" style="width:70%;">                                                
+            <!-- frame get obj -->
+
+        <option value="txt" data-i18n="httpin.utf8">a UTF-8 string</option>
+        <option value="obj" data-i18n="httpin.json">a parsed JSON object</option>
+       
+    </select>
+
+    </div>
+
+    <div class="form-row">
+
+        <label for="node-input-url"><i class="node-red/bridge-dash.svg"></i><span data-i18n="httpin.label.url"></span></label>
+        <input type="text" id="node-input-url" style="width:50%;" placeholder="http://">
+        <input type="text" id="node-input-url1" style="width:20%;" placeholder="1-14">
+
+    </div>
+
+    <div class="form-tips" id="tip-json" hidden><span data-i18n="httpin.tip.req"></span></div>
+
+    
+
+</script>
+
+<script type="text/html" data-help-name="vamapi">
+    <p>A simple node that converts the message payloads into all lower-case characters</p>
+</script>
+
